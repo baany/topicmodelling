@@ -4,6 +4,7 @@ import string
 import nltk
 import gensim
 from gensim import corpora
+import re
 
 file2Open = open("paragraph.txt","r")
 stext = file2Open.read()
@@ -30,3 +31,25 @@ Lda = gensim.models.ldamodel.LdaModel
 ldamodel = Lda(doc_term_matrix, num_topics=3, id2word = dictionary, passes=50)
 
 print(ldamodel.print_topics(num_topics=3, num_words=3))
+
+
+
+
+strOut = ldamodel.print_topics(num_topics=3, num_words=3)
+#strOut = [(0, '0.209*"fruit" + 0.125*"drink" + 0.125*"juice" '),(1, '0.150*"fruit" + 0.149*"eat" + 0.149*"remove" ')]
+#print (type(strOut))
+#print (strOut[0][-1])
+listOfTags = []
+for item in strOut:
+    #print (item[-1])
+    stringTest = item[-1]
+    res = re.findall(r'\w+', stringTest)
+    tagList = []
+    #print (res)
+    for item2 in res:
+        if (item2.isdigit()==True):
+            pass
+        else:
+            tagList.append(item2)
+    listOfTags.append(tagList)
+print (listOfTags)
